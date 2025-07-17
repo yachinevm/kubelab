@@ -20,7 +20,7 @@ spec:
       port: 80
       targetPort: 80
 ```
-Étape 2 : Déployer le Service et y Accéder
+# Étape 2 : Déployer le Service et y Accéder
 Appliquez le manifeste du Service :
 
 ```Bash
