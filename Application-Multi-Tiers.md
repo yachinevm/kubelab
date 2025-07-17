@@ -141,6 +141,7 @@ spec:
       name: postgres-data
     spec:
       accessModes:
+        - ReadWriteOnce
       storageClassName: "standard" # Utilise la StorageClass par défaut de Minikube
       resources:
         requests:
