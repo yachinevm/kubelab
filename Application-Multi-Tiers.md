@@ -391,10 +391,10 @@ sudo apt install nginx -y
 sudo systemctl status nginx
 ```
 3. Crée un fichier de configuration pour ton app (ex: /etc/nginx/sites-available/vote):
-```JSON
+```
 server {
     listen 80;
-    server_name vote.votre-domaine.local;
+    server_name vote.votre-domaine.local result.votre-domaine.local;;
 
     location / {
         proxy_pass http://192.168.49.2:30721;  # IP minikube + port NodePort du service vote
