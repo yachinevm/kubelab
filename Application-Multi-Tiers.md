@@ -17,10 +17,11 @@ Configurez votre DNS local. Obtenez d'abord l'IP de votre Minikube :
 
 minikube ip
 ```
-Ensuite, sur votre machine locale (pas la VM), modifiez votre fichier hosts (/etc/hosts ou C:\Windows\System32\drivers\etc\hosts) pour y ajouter les lignes suivantes, en remplaçant <IP_DE_MINIKUBE> par l'adresse obtenue :
-
-<IP_DE_MINIKUBE> vote.votre-domaine.local
-<IP_DE_MINIKUBE> result.votre-domaine.local
+Ensuite, sur votre machine locale (pas la VM), modifiez votre fichier hosts (/etc/hosts ou C:\Windows\System32\drivers\etc\hosts) pour y ajouter les lignes suivantes, en remplaçant  <IP_PUBLIQUE_DE_LA_VM> par l'adresse de votre Droplet :e obtenue :
+```
+<IP_PUBLIQUE_DE_LA_VM> vote.votre-domaine.local
+<IP_PUBLIQUE_DE_LA_VM> result.votre-domaine.local
+```
 
 ##  Étape 2 : Déploiement des Composants
 Créez les fichiers YAML suivants et appliquez-les tous dans le namespace vote avec la commande 
@@ -370,6 +371,49 @@ kubectl get pvc -n vote
 kubectl get ingress -n vote
 
 ```
+
+##  Étape 4 :  utiliser un reverse proxy Nginx sur ta VM Ubuntu
+
+Minikube tourne dans la VM avec IP privée interne (ex: 192.168.49.2) — services exposés sur NodePort ou ClusterIP.
+
+Nginx sur la VM écoute sur l’IP publique ur port 80 ou 443.
+
+Nginx redirige le trafic HTTP vers ton service Kubernetes via l’IP Minikube + port NodePort.
+
+### Étapes pour configurer Nginx comme reverse proxy
+1. Installer Nginx :
+```
+sudo apt update
+sudo apt install nginx -y
+```
+2.Vérifie que Nginx est bien lancé :
+```
+sudo systemctl status nginx
+```
+3. Crée un fichier de configuration pour ton app (ex: /etc/nginx/sites-available/vote):
+```JSON
+server {
+    listen 80;
+    server_name vote.votre-domaine.local;
+
+    location / {
+        proxy_pass http://192.168.49.2:30721;  # IP minikube + port NodePort du service vote
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+```
+Active cette config :
+
+```bash
+sudo ln -s /etc/nginx/sites-available/vote /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+
+```
+
 Testez l'application :
 
 Ouvrez http://vote.votre-domaine.local dans votre navigateur et votez.
