@@ -28,7 +28,7 @@ spec:
         - containerPort: 80
 Étape 2 : Déployer et Observer la Hiérarchie
 Appliquez le manifeste pour créer le Deployment :
-
+```
 ```Bash
 
 kubectl apply -f deployment-nginx.yaml
