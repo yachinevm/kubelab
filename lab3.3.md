@@ -26,8 +26,9 @@ spec:
   resources:
     requests:
       storage: 1Gi
-Appliquez le manifeste :
 ```
+Appliquez le manifeste :
+
 
 ```Bash
 
