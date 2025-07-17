@@ -1,4 +1,4 @@
-# 🧾 Fiche Pratique Kubernetes – Commandes Essentielles (sans alias + shell)
+# 🧾 Fiche Pratique Kubernetes – Commandes Essentielles 
 
 ## 1. 💡 Travaille avec des alias intelligents
 
