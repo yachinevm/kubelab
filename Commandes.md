@@ -123,7 +123,79 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 
 ---
 
-✅ **Conseils Bonus** :
-- Toujours taguer les images Docker (`:v1.0.0`, pas `:latest`)
-- Bien utiliser les `readinessProbe` et `livenessProbe`
-- Ne jamais appliquer à chaud sans fichier versionné (GitOps)
+## 13. ⚙️ Créer des objets Kubernetes depuis la ligne de commande
+
+### ▶️ Créer un Pod simple
+```bash
+kubectl run nginx-pod --image=nginx
+```
+➡️ Crée un Pod nommé `nginx-pod` basé sur l’image Docker officielle `nginx`.
+
+---
+
+### 🛠️ Créer un Deployment
+```bash
+kubectl create deployment nginx-deployment --image=nginx
+```
+
+Ajouter des replicas :
+```bash
+kubectl scale deployment nginx-deployment --replicas=3
+```
+
+---
+
+### 🌐 Exposer un Deployment via un Service (type ClusterIP par défaut)
+```bash
+kubectl expose deployment nginx-deployment --port=80 --target-port=80
+```
+
+Pour un Service de type **NodePort** :
+```bash
+kubectl expose deployment nginx-deployment --type=NodePort --port=80
+```
+
+---
+
+### 📁 Créer un Namespace
+```bash
+kubectl create namespace mon-namespace
+```
+
+Changer de namespace actif :
+```bash
+kubectl config set-context --current --namespace=mon-namespace
+```
+
+---
+
+### 🔐 Créer un Secret (clé simple en ligne)
+```bash
+kubectl create secret generic mon-secret --from-literal=password=SuperSecret123
+```
+
+---
+
+### ⚙️ Créer un ConfigMap
+```bash
+kubectl create configmap mon-config --from-literal=ENV=prod
+```
+
+---
+
+### 📄 Voir les ressources créées
+```bash
+kubectl get all
+kubectl get svc
+kubectl get deployment
+kubectl get pod
+```
+
+---
+
+📌 Pour convertir une ressource CLI en YAML sans l’appliquer :
+```bash
+kubectl create deployment nginx-deployment --image=nginx --dry-run=client -o yaml
+```
+
+
