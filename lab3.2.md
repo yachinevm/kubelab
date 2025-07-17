@@ -1,4 +1,4 @@
-#Lab 3.2 : Sécuriser une Application avec les Network Policies
+# Lab 3.2 : Sécuriser une Application avec les Network Policies
 Objectif : Isoler un Pod "backend" et n'autoriser que le Pod "frontend" à communiquer avec lui.
 
 ## Étape 1 : Déployer un Client et un Serveur
